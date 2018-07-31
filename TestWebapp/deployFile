@@ -1,0 +1,15 @@
+node(){
+    stage('Checkout Project from Git')
+    {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '759ac5b0-1ed6-43ec-a61c-5fe6bcfb38c4', url: 'https://github.com/surajsoni/Tomcat.git']]])
+    }
+    stage('Build And package'){
+        def mvnHome=tool name: 'maven', type: 'maven'
+        def mvnCMD="${mvnHome}/bin/mvn"
+        sh "${mvnCMD} clean package"
+    }
+   
+    sshagent(['tomcat-dev']) {
+sh 'scp -o StrictHostKeyChecking=no target/*.war admin@172.31.19.136:/TestWebapp/'
+}
+}
