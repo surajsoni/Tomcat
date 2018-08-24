@@ -42,7 +42,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	</profiles>
+	<profiles>
           <profile>
        <id>sonar</id>
        <properties>
